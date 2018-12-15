@@ -151,17 +151,23 @@
     ((or (atom?(car finger-tree))(and (null? (finger-tree-right finger-tree))(null? (finger-tree-spine finger-tree)))) (cons (car finger-tree)(list (cdr finger-tree))))
   (else
    (let ((first-value (car (finger-tree-left finger-tree)))(left-rem-value (cdr (finger-tree-left finger-tree))))
-  (cond
-    ((and (> (length left-rem-value) 0))
-        (cons first-value (list (deep left-rem-value (finger-tree-spine finger-tree) (finger-tree-right finger-tree)))))
-    ((= (length left-rem-value) 0)
-        (cond ((null? (finger-tree-spine finger-tree))
+     (cond
+       ((and (> (length left-rem-value) 0))
+          (cons first-value (list (deep left-rem-value (finger-tree-spine finger-tree) (finger-tree-right finger-tree)))))
+       ((= (length left-rem-value) 0)
+            (cond
+              ((null? (finger-tree-spine finger-tree))
                 (if (= (length (finger-tree-right finger-tree)) 1 )
                     (cons first-value (list (finger-tree-right finger-tree)))
                     (cons first-value (list (deep (list (car (finger-tree-right finger-tree))) (finger-tree-spine finger-tree) (cdr (finger-tree-right finger-tree)))))))
-              (else(deep-pop finger-tree))))
+               (else(cons first-value  (list (deep-pop finger-tree))))))
        (else (cons (car finger-tree)(list (cdr finger-tree))))))))) 
 
+;pre: inputs a finger tree with one element in the left finger and non empty spine and non empty right finger
+;post: outputs the tree and pop'ed element after poping the element
+(define(deep-pop finger-tree)
+  (list (cons (car (finger-tree-pop (finger-tree-spine finger-tree))) '())(cadr (finger-tree-pop (finger-tree-spine finger-tree)))(finger-tree-right finger-tree)))
+  
 
 
 
@@ -207,6 +213,14 @@ finger-tree
 (define finger-tree (cdr (finger-tree-pop finger-tree))) ; Saving resulting finger tree after pop
 finger-tree
 ;
+
+(finger-tree-pop '((18) ((30) ((27) () (60 70 80)) (90 102 103 104)) (105 106)))
+;this has two spines and in all its spine have length one along with the first left finger, following was the output
+;output:
+;(18 ((30) ((27) ((60) () (70 80)) (90 102 103 104)) (105 106)))
+;18 is the pop'ed element
+;((30) ((27) ((60) () (70 80)) (90 102 103 104)) (105 106)) is the remaining tree
+
 ;Output:
 ;()
 ;(20 18 17 16)
