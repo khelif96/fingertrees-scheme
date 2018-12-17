@@ -67,7 +67,7 @@
 
 (define (finger-tree-push item finger-tree)
   ( cond ((isEmpty? finger-tree) (push-empty item))
-          ((isSingle? finger-tree) (push-single item finger-tree))
+          ((isSingle? item) (push-single item finger-tree))
           (else
            (deep-append item finger-tree)))
   )
@@ -75,7 +75,6 @@
 (define (finger-tree-left finger-tree)
   (cond ( (atom? finger-tree) finger-tree)
         ( (null? finger-tree) finger-tree)
-        ( (isSingle? finger-tree) finger-tree)
         ( (list? (cadr finger-tree)) (car finger-tree))
         ( else finger-tree))
   )
@@ -112,24 +111,12 @@
   )
 
 (define (push-single item single-tree)
-  (let ((len (length single-tree)))
-          (if (and ( < len 4) (< (+ len (length (digit item))) 5))
-              (append  single-tree (digit item))
-              (deep (finger-tree-left single-tree)
-                    (finger-tree-push (finger-tree-right single-tree) (finger-tree-spine single-tree))
-                    (digit item))
-              )
-        )
-
+  (deep (finger-tree-left single-tree)
+        (finger-tree-push (finger-tree-right single-tree) (finger-tree-spine single-tree))
+        (digit item))
   )
 (define (isSingle? finger-tree)
-  (let ((len (length finger-tree)))
-    (if (< len 3)
-        #t
-         (not (list? (cadr finger-tree)))
-        )
-
-    )
+  (not (list? (cadr finger-tree)))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; DEEP TREE STRUCTURE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -186,50 +173,48 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTING ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;
+
 (define finger-tree empty-tree)
 finger-tree
-;(define finger-tree (finger-tree-push '40 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '41 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '42 finger-tree))
-;(define finger-tree (finger-tree-push '43 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '44 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '45 finger-tree))
-;(define finger-tree (finger-tree-push '46 finger-tree))
-;(define finger-tree (finger-tree-push '47 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '48 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '49 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '50 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '51 finger-tree))
+(define finger-tree (push-empty '(20 18 17 16)))
+finger-tree
+(define finger-tree (push-single '(30 29 28 27) finger-tree))
+finger-tree
+(define finger-tree (deep-append '40 finger-tree))
+finger-tree
+(define finger-tree (deep-append '50 finger-tree))
+finger-tree
+(define finger-tree (deep-append '60 finger-tree))
+finger-tree
+(define finger-tree (deep-append '70 finger-tree))
+finger-tree
+(define finger-tree (deep-append '80 finger-tree))
+finger-tree
+(define finger-tree (deep-append '90 finger-tree))
+finger-tree
+(define finger-tree (deep-append '100 finger-tree))
+finger-tree
+(define finger-tree (deep-append '101 finger-tree))
+finger-tree
+(define finger-tree (deep-append '102 finger-tree))
+finger-tree
+(define finger-tree (deep-append '103 finger-tree))
+finger-tree
+(define finger-tree (deep-append '104 finger-tree))
+finger-tree
+(define finger-tree (deep-append '105 finger-tree))
+finger-tree
+(define finger-tree (deep-append '106 finger-tree))
+finger-tree
 
-(define (fill-up count finger-tree)
-  (if (= count 0) finger-tree
-      (fill-up (- count 1) (finger-tree-push count finger-tree))
-  ))
-(define finger-tree (fill-up 2000 finger-tree))
-(caddr finger-tree)
-;(define finger-tree (finger-tree-push '52 finger-tree))
-;(define finger-tree (finger-tree-push '53 finger-tree))
-;(define finger-tree (finger-tree-push '54 finger-tree))
-
-
+; Test Popping
+(finger-tree-pop finger-tree) ; Demoing sample output of pop function returning popped value and resulting tree
+(car (finger-tree-pop finger-tree)) ; Demoing just getting the value popped
+(define finger-tree (cdr (finger-tree-pop finger-tree))) ; Saving resulting finger tree after pop
+finger-tree
 ;
-;; Test Popping
-;(finger-tree-pop finger-tree) ; Demoing sample output of pop function returning popped value and resulting tree
-;(car (finger-tree-pop finger-tree)) ; Demoing just getting the value popped
-;(define finger-tree (cdr (finger-tree-pop finger-tree))) ; Saving resulting finger tree after pop
-;finger-tree
-;;
-;
-;(finger-tree-pop '((18) ((30) ((27) () (60 70 80)) (90 102 103 104)) (105 106)))
+
+(finger-tree-pop '((18) ((30) ((27) () (60 70 80)) (90 102 103 104)) (105 106)))
 ;this has two spines and in all its spine have length one along with the first left finger, following was the output
 ;output:
 ;(18 ((30) ((27) ((60) () (70 80)) (90 102 103 104)) (105 106)))
