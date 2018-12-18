@@ -183,8 +183,9 @@
 ;deep pop stores the value of the finger-tree-pop using let and gets the first element by car which is the removed element
 ;the second element is the cadr of the result which is the remaining of the list
 (define(deep-pop finger-tree)
-  (list (cons (car (finger-tree-pop (finger-tree-spine finger-tree))) '())(cadr (finger-tree-pop (finger-tree-spine finger-tree)))(finger-tree-right finger-tree)))
-  
+  (let* ((pop-list (finger-tree-pop (finger-tree-spine finger-tree)) )( removed (car pop-list))(remaining-spine (cadr pop-list)))
+  (list (cons removed '()) remaining-spine (finger-tree-right finger-tree))))
+
 
 (define (fill-up count finger-tree)
   (if (= count 0) finger-tree
