@@ -176,56 +176,90 @@
                (else(cons first-value  (list (deep-pop finger-tree))))))
        (else (cons (car finger-tree)(list (cdr finger-tree))))))))) 
 
+
 ;pre: inputs a finger tree with one element in the left finger and non empty spine and non empty right finger
 ;post: outputs the tree and pop'ed element after poping the element
+
+;deep pop stores the value of the finger-tree-pop using let and gets the first element by car which is the removed element
+;the second element is the cadr of the result which is the remaining of the list
 (define(deep-pop finger-tree)
   (list (cons (car (finger-tree-pop (finger-tree-spine finger-tree))) '())(cadr (finger-tree-pop (finger-tree-spine finger-tree)))(finger-tree-right finger-tree)))
   
 
-
+(define (fill-up count finger-tree)
+  (if (= count 0) finger-tree
+      (fill-up (- count 1) (finger-tree-push count finger-tree))
+  ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; TESTING ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;
 (define finger-tree empty-tree)
 finger-tree
-;(define finger-tree (finger-tree-push '40 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '41 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '42 finger-tree))
-;(define finger-tree (finger-tree-push '43 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '44 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '45 finger-tree))
-;(define finger-tree (finger-tree-push '46 finger-tree))
-;(define finger-tree (finger-tree-push '47 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '48 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '49 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '50 finger-tree))
-;finger-tree
-;(define finger-tree (finger-tree-push '51 finger-tree))
+(define finger-tree (finger-tree-push '40 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '41 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '42 finger-tree))
+(define finger-tree (finger-tree-push '43 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '44 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '45 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '46 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '47 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '48 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '49 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '50 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '51 finger-tree))
 
-(define (fill-up count finger-tree)
-  (if (= count 0) finger-tree
-      (fill-up (- count 1) (finger-tree-push count finger-tree))
-  ))
-(define finger-tree (fill-up 2000 finger-tree))
-(caddr finger-tree)
-;(define finger-tree (finger-tree-push '52 finger-tree))
-;(define finger-tree (finger-tree-push '53 finger-tree))
-;(define finger-tree (finger-tree-push '54 finger-tree))
+;(define finger-tree (fill-up 2000 finger-tree))
+;(caddr finger-tree)
+(define finger-tree (finger-tree-push '52 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '53 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '54 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '55 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '56 finger-tree))
+finger-tree
+(define finger-tree (finger-tree-push '57 finger-tree))
+finger-tree
 
 
+(define finger-tree (finger-tree-pop finger-tree))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
+(define finger-tree (finger-tree-pop (cadr finger-tree)))
+(cadr finger-tree)
 ;
 ;; Test Popping
 ;(finger-tree-pop finger-tree) ; Demoing sample output of pop function returning popped value and resulting tree
 ;(car (finger-tree-pop finger-tree)) ; Demoing just getting the value popped
-;(define finger-tree (cdr (finger-tree-pop finger-tree))) ; Saving resulting finger tree after pop
+;(define finger-tree (cadr (finger-tree-pop finger-tree))) ; Saving resulting finger tree after pop
 ;finger-tree
 ;;
 ;
@@ -237,23 +271,22 @@ finger-tree
 ;((30) ((27) ((60) () (70 80)) (90 102 103 104)) (105 106)) is the remaining tree
 
 ;Output:
-;()
-;(20 18 17 16)
-;((20 18 17 16) () (30 29 28 27))
-;((20 18 17 16) (30 29 28) (27 40))
-;((20 18 17 16) (30 29 28) (27 40 50))
-;((20 18 17 16) (30 29 28) (27 40 50 60))
-;((20 18 17 16) ((30 29 28) () (27 40 50)) (60 70))
-;((20 18 17 16) ((30 29 28) () (27 40 50)) (60 70 80))
-;((20 18 17 16) ((30 29 28) () (27 40 50)) (60 70 80 90))
-;((20 18 17 16) ((30 29 28) (27 40 50) (60 70 80)) (90 100))
-;((20 18 17 16) ((30 29 28) (27 40 50) (60 70 80)) (90 100 101))
-;((20 18 17 16) ((30 29 28) (27 40 50) (60 70 80)) (90 100 101 102))
-;((20 18 17 16) ((30 29 28) ((27 40 50) () (60 70 80)) (90 100 101)) (102 103))
-;((20 18 17 16) ((30 29 28) ((27 40 50) () (60 70 80)) (90 100 101)) (102 103 104))
-;((20 18 17 16) ((30 29 28) ((27 40 50) () (60 70 80)) (90 100 101)) (102 103 104 105))
-;((20 18 17 16) ((30 29 28) ((27 40 50) (60 70 80) (90 100 101)) (102 103 104)) (105 106))
-;(20 ((18 17 16) ((30 29 28) ((27 40 50) (60 70 80) (90 100 101)) (102 103 104)) (105 106)))
-;20
-;(((18 17 16) ((30 29 28) ((27 40 50) (60 70 80) (90 100 101)) (102 103 104)) (105 106)))
-;(18 ((30) ((27) ((60) () (70 80)) (90 102 103 104)) (105 106)))
+;((40 41 42 43) (44 45 46) (47 48))
+;((40 41 42 43) (44 45 46) (47 48 49))
+;((40 41 42 43) (44 45 46) (47 48 49 50))
+;((40 41 42 43) ((44 45 46) () (47 48 49)) (50 51 52))
+;((40 41 42 43) ((44 45 46) () (47 48 49)) (50 51 52 53))
+;((40 41 42 43) ((44 45 46) (47 48 49) (50 51 52)) (53 54))
+;((40 41 42 43) ((44 45 46) (47 48 49) (50 51 52)) (53 54 55))
+;((40 41 42 43) ((44 45 46) (47 48 49) (50 51 52)) (53 54 55 56))
+;((40 41 42 43) ((44 45 46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((41 42 43) ((44 45 46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((42 43) ((44 45 46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((43) ((44 45 46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((44) ((45 46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((45) ((46) ((47 48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((46) ((47) ((48 49) () (50 51 52)) (53 54 55)) (56 57))
+;((47) ((48) ((49) () (50 51 52)) (53 54 55)) (56 57))
+;((48) ((49) ((50) () (51 52)) (53 54 55)) (56 57))
+;((49) ((50) ((51) () (52)) (53 54 55)) (56 57))
+;((50) ((51) (52) (53 54 55)) (56 57))
